@@ -10,13 +10,7 @@ app.set('view engine', 'handlebars');
 
 app.set('port', process.env.PORT || 3333)
 
-var fortunes = [
-    'Conquer your fears or they will conquer you.',
-    'Rivers need springs.',
-    'Do not fear what you don not know.',
-    'You will have a pleasant surprise.',
-    'Whenever possible, keep it simple.'
-]
+var fortunes = require('./lib/fortune.js')
 
 // 静态资源目录，应该放在所有路由之前，内部所有文件对外开放
 app.use(express.static(__dirname + '/public'));
@@ -31,8 +25,7 @@ app.get('/', function(req, res) {
 app.get('/about', function(req, res) {
     // res.type('text/plain')
     // res.send('About Page')
-    var randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)]
-    res.render('about', {fortune: randomFortune})
+    res.render('about', {fortune: fortunes.getFortune()})
 })
 
 // 定制404页面 use定制中间件
